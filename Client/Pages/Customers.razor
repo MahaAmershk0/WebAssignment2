@@ -1,0 +1,49 @@
+﻿@page "/Customers"
+@using Assignment2.Shared
+@inject HttpClient Http
+
+<PageTitle>Customers</PageTitle>
+
+<button @onclick=getcustomers>List Customers</button>
+
+@if (records == null)
+{
+    <p><em>No Records To Show!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CustomerId</th>
+                <th>CustomerName</th>
+                <th>CustomerPhoneNo</th>
+                <th>CustomerAddress</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in records)
+            {
+                <tr>
+                    <td>@customer.CustomerId</td>
+                    <td>@customer.CustomerName</td>
+                    <td>@customer.CustomerPhoneNo</td>
+                    <td>@customer.CustomerAddress</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private CustomerInfo[]? records;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    //}
+    private async void getcustomers()
+    {
+        records = await Http.GetFromJsonAsync <CustomerInfo[]>("/ListCustomers");
+    }
+}
